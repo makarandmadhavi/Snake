@@ -10,6 +10,7 @@ function startgame() {
 }
 
 function newGame() {
+  score = 0;
   box = 20;
   vx = 1
   vy = 0
@@ -35,11 +36,17 @@ function apple() {
 }
 
 function game() {
+  if (ax == px && ay == py) {
+    apple();
+    score++;
+    $("#score").html(score);
+  } else {
+    trail.shift();
+  }
   ctx.fillStyle = "black";
   ctx.fillRect(0, 0, c.width, c.height);
   ctx.fillStyle = "red";
   ctx.fillRect(ax, ay, box, box);
-  console.log(trail.find(t => t.x == px && t.y == py));
   if (trail.find(t => t.x == px && t.y == py) != undefined) {
     clearInterval(gamestart);
     newGame();
@@ -48,11 +55,6 @@ function game() {
     x: px,
     y: py
   });
-  if (ax == px && ay == py) {
-    apple();
-  } else {
-    trail.shift();
-  }
   px = px + (box * vx)
   py = py + (box * vy)
   if (px > c.width-box) {
